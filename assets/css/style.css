@@ -3,7 +3,6 @@ ul {
 }
 
 #menuScreen {
-    display: block;
     background-image: url('../images/gate.png');
     position: fixed;
     top: 0;
@@ -19,7 +18,6 @@ ul {
 }
 
 #gameScreen {
-    display: block;
     background-image: url('../images/brown_ice_by_darkwood67.jpg');
     position: fixed;
     top: 0;
@@ -35,7 +33,6 @@ ul {
 }
 
 #gameOverScreen {
-    display: block;
     background-image: url('../images/shore.png');
     position: fixed;
     top: 0;
@@ -51,7 +48,6 @@ ul {
 }
 
 #creditsScreen {
-    display: block;
     background-image: url('../images/wizardtower.png');
     position: fixed;
     top: 0;
@@ -103,4 +99,80 @@ h1 {
     color: #93ec8b;
     text-shadow: 6px 6px #000000;
     text-align: center;
+}
+
+/* Scrolling Credits */
+
+.marquee {
+    top: 6em;
+    position: relative;
+    box-sizing: border-box;
+    animation: marquee 15s linear infinite;
+}
+
+/* Make it move! */
+
+@keyframes marquee {
+    0% {
+        top: 38em
+    }
+    100% {
+        top: -50em
+    }
+}
+
+/* Make it look pretty */
+
+.microsoft .marquee {
+    margin: 0;
+    padding: 0 1em;
+    line-height: 1.5em;
+    font-family: 'Asul', sans-serif;
+    font-size: 40px;
+    text-align: center;
+}
+
+.microsoft:before,
+.microsoft::before,
+.microsoft:after,
+.microsoft::after {
+    left: 0;
+    z-index: 1;
+    content: '';
+    position: absolute;
+    pointer-events: none;
+    width: 100%;
+    height: 2em;
+    background-image: linear-gradient(180deg, #FFF, rgba(255, 255, 255, 0));
+}
+
+.microsoft:after,
+.microsoft::after {
+    bottom: 0;
+    transform: rotate(180deg);
+}
+
+.microsoft:before,
+.microsoft::before {
+    top: 0;
+}
+
+#creditsScreen {
+    overflow: hidden;
+}
+
+.title {
+    color: #f0abd5;
+}
+
+.highlight {
+    color: gold;
+}
+
+.thanks {
+    color: #78f4fd;
+}
+
+.plain {
+    color: white;
 }
