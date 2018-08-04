@@ -1,0 +1,57 @@
+ul {
+    list-style-type:none;
+}
+
+#menuScreen {
+    display: block;
+    background-image: url('../images/gate.png');
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin: 0 auto;
+    height: 100%;
+    /* Preserve aspet ratio */
+    min-width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: auto;
+    
+}
+
+.btn {
+    display: block;
+    width: 180px;
+    margin: 0 auto;
+    height: 40px;
+    line-height: 20px;
+    border: 2px solid brown;
+    color: white;
+    font-weight: bold;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    background-color: #009900;
+    background-image: -webkit-linear-gradient(left, #009900 40%, #66ff66 100%);
+    background-image: linear-gradient(to left, #009900 40%, #66ff66 100%);
+    border-radius: 5px;
+    font-size: 20px;
+    text-align: center;
+}
+
+#menuWrapper {
+    display: block;
+    margin-top: 22%;
+}
+
+.btn:hover {
+    background-color: #12ee80;
+    background-image: -webkit-linear-gradient(left, #66ff66 40%, #009900 100%);
+    background-image: linear-gradient(to left, #66ff66 40%, #009900 100%);
+}
+
+h1 {
+    font-family: 'Kavoon', cursive;
+    font-size: 100px;
+    color: #93ec8b;
+    text-shadow: 6px 6px #000000;
+    text-align: center;
+}
