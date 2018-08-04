@@ -29,7 +29,20 @@ ul {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    overflow: auto;    
+    overflow: auto;
+    font-family: 'Asul', sans-serif;    
+}
+
+#timer {
+    font-family: 'Kavoon', cursive;
+    font-size: 50px;
+    text-align: center;
+    color: brown;
+}
+
+.score {
+    font-size: 50px;
+    text-align: center;
 }
 
 #gameOverScreen {
@@ -175,4 +188,13 @@ h1 {
 
 .plain {
     color: white;
+}
+
+#gameBox {
+    background-color: gray;
+    border: #000000 5px solid;
+    margin: 0 auto;
+    color: white;
+    font-size: 40px;
+    height: 700px;
 }
