@@ -270,8 +270,8 @@ var game = {
 function processEndGame() {
     var results = $("<div id='results'>");
     var playAgain = $("<div id='playAgain'>");
-    var playButton = $("<button id='playbtn' class='btn btn-lg'>");
-    var creditsButton = $("<button id='credits' class='btn btn-lg'>");
+    var playButton = $("<button id='playBtn' class='btn btn-lg'>");
+    var creditsButton = $("<button id='creditsBtn' class='btn btn-lg'>");
 
     if (score > highScore) {
         highScore = score;
@@ -288,7 +288,7 @@ function processEndGame() {
     creditsButton.appendTo($("#playAgain"));
     creditsButton.text("Quit");
 
-    $("#playbtn").on("click", function () {
+    $("#playBtn").on("click", function () {
         console.log("WTF");
         $("#hiscore").text(highScore);
         questionsLeft = 10;
@@ -296,12 +296,13 @@ function processEndGame() {
         score = 0;
         $("#score").text(score);
         gameOverSong[0].pause();
+        $("#results #playAgain").remove();
         game.showScreen(gameMain);
         getQuestion();
     });
     
-    $('#credits').click(function () {
-        menuSong[0].pause();
+    $('#creditsBtn').on("click", function () {
+        gameOverSong[0].pause();
         game.showScreen(gameCredits);
         creditsSong[0].play();
     
