@@ -183,19 +183,24 @@ var questionList = [{
 
 var menuSong = $("#menuMusic");
 var gameSong = $("#gameMusic");
-var creditsSong = $("#creditsMusic")
+var creditsSong = $("#creditsMusic");
+var gameOverSong = $("#gameOverMusic");
+var correctSnd = $("#correctSnd");
 var gameMenu = $("#menuScreen");
 var gameMain = $("#gameScreen");
-var gameCredits = $("#creditsScreen")
-var displayScreens = [menuScreen, gameScreen, creditsScreen, gameOverScreen];
+var gameCredits = $("#creditsScreen");
+var gameOverScreen = $("#OverScreen");
+var plugScreen;
+var displayScreens = [menuScreen, gameScreen, creditsScreen, OverScreen];
 var highScore = 0;
 var currentQuestion;
-var timeLeft = 30;
-var questionsLeft = 10;
+var timeLeft;
+var questionsLeft = 1;
 var score = 0;
 var correctAnswers = 0;
 var wrongAnswers = 0;
 var intervalId;
+var delayNextQuestion;
 
 var game = {
     showScreen: function (activeDisplay) {
@@ -212,11 +217,15 @@ var game = {
         console.log(clickedButton.text());
 
         if (currentQuestion.correct === clickedButton.text()) {
-            score = timeLeft * 375;
+            score = score + (timeLeft * 375);
             $("#score").text(score);
             game.stop();
             $("#answersDiv").hide();
-            $("#correctA").show();
+            $("#flavorDiv").show();
+            gameSong[0].pause();
+            correctSnd[0].play();
+
+
         } else {
             console.log("It's not working!!!");
         }
@@ -240,9 +249,20 @@ var game = {
     },
 
     initGame: function () {
-
+        
 
         function getQuestion() {
+        if (questionsLeft === 0) {
+            game.showScreen(gameOverScreen);
+            gameSong[0].pause();
+            gameOverSong[0].play();
+        } else {
+        correctSnd[0].pause();
+        correctSnd[0].currentTime = 0;
+        menuSong[0].pause();
+        gameSong[0].play();
+        timeLeft = 30;
+            
             var qIndex = Math.floor(Math.random() * questionList.length);
             var questionDiv = $("<div>").appendTo($("#gameBox"));
             var answersDiv = $("<div id=answersDiv>").appendTo($("#gameBox"));
@@ -274,22 +294,37 @@ var game = {
                 value: currentQuestion.answer4,
                 'data-answer': 'answer4'
             });
-            var p = $("<p id='correctA'>");
+            var p = $("<p>");
+            var flavorImg = $("<img>");
+            var flavorP = $("<p>");
             answersDiv.attr("class", "answer");
             answer1.appendTo(answersDiv);
             answer2.appendTo(answersDiv);
             answer3.appendTo(answersDiv);
             answer4.appendTo(answersDiv);
-            p.hide();
+            flavorDiv.hide();
             p.text("The correct answer is " + currentQuestion.correct);
             p.appendTo(flavorDiv);
+            flavorP.text(currentQuestion.flavor);
+            flavorP.appendTo(flavorDiv);
+            flavorImg.attr("src", currentQuestion.image);
+            flavorImg.appendTo(flavorDiv);
             $(".answer1").text(currentQuestion.answer1);
             $(".answer2").text(currentQuestion.answer2);
             $(".answer3").text(currentQuestion.answer3);
             $(".answer4").text(currentQuestion.answer4);
             $(".answerBtn").click(function () {
                 game.checkAnswer($(this));
+                delayNextQuestion = setTimeout(function() {
+                    $(".question").remove();
+                    $(".answer").remove();
+                    $("#flavorDiv").remove();
+                    clearInterval(intervalId);
+                    getQuestion();
+                    game.setTimer();
+                  }, 10000);
             });
+        }
         }
         getQuestion();
         game.setTimer();
@@ -312,9 +347,6 @@ $(document).ready(function () {
 
 document.querySelectorAll('#play')[0].addEventListener('click', function () {
     game.showScreen(gameMain);
-    // game.gameUI.initGame();
-    menuSong[0].pause();
-    gameSong[0].play();
     game.initGame();
 });
 
