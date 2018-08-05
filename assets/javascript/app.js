@@ -196,7 +196,7 @@ var displayScreens = [menuScreen, gameScreen, creditsScreen, OverScreen];
 var highScore = 0;
 var currentQuestion;
 var timeLeft;
-var questionsLeft = 1;
+var questionsLeft = 10;
 var score = 0;
 var correctAnswers = 0;
 var wrongAnswers = 0;
@@ -270,7 +270,7 @@ var game = {
 function processEndGame() {
     var results = $("<div id='results'>");
     var playAgain = $("<div id='playAgain'>");
-    var playButton = $("<button id='play' class='btn btn-lg'>");
+    var playButton = $("<button id='playbtn' class='btn btn-lg'>");
     var creditsButton = $("<button id='credits' class='btn btn-lg'>");
 
     if (score > highScore) {
@@ -284,13 +284,34 @@ function processEndGame() {
     playAgain.text("Would you like to play again?");
     playAgain.appendTo($("#OverScreen"))
     playButton.appendTo($("#playAgain"));
+    playButton.text("Play Again")
     creditsButton.appendTo($("#playAgain"));
+    creditsButton.text("Quit");
+
+    $("#playbtn").on("click", function () {
+        console.log("WTF");
+        $("#hiscore").text(highScore);
+        questionsLeft = 10;
+        timeLeft = 30;
+        score = 0;
+        $("#score").text(score);
+        gameOverSong[0].pause();
+        game.showScreen(gameMain);
+        getQuestion();
+    });
+    
+    $('#credits').click(function () {
+        menuSong[0].pause();
+        game.showScreen(gameCredits);
+        creditsSong[0].play();
+    
+    });
 }
 
 
 function getQuestion() {
     if (questionsLeft === 0) {
-        clearInterval(intervalId);
+        game.stop();
         game.showScreen(gameOverScreen);
         gameSong[0].pause();
         gameOverSong[0].play();
@@ -301,7 +322,6 @@ function getQuestion() {
         menuSong[0].pause();
         gameSong[0].play();
         timeLeft = 30;
-        game.setTimer();
         var qIndex = Math.floor(Math.random() * questionList.length);
         var questionDiv = $("<div>").appendTo($("#gameBox"));
         var answersDiv = $("<div id=answersDiv>").appendTo($("#gameBox"));
@@ -352,15 +372,15 @@ function getQuestion() {
         $(".answer2").text(currentQuestion.answer2);
         $(".answer3").text(currentQuestion.answer3);
         $(".answer4").text(currentQuestion.answer4);
+        game.setTimer();
         $(".answerBtn").click(function () {
             game.checkAnswer($(this));
                 delayNextQuestion = setTimeout(function () {
                     $(".question").remove();
                     $(".answer").remove();
                     $("#flavorDiv").remove();
-                    clearInterval(intervalId);
+                    clearInterval(intervalId);                    
                     getQuestion();
-                    game.setTimer();
                 }, 10000);
             
         });
