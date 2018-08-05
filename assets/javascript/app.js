@@ -208,15 +208,54 @@ var game = {
         var score = 0;
         var correctAnswers = 0;
         var wrongAnswers = 0;
+        var intervalId;
+        var timeLeft = 30;
         
         function getQuestion() {
             var qIndex = Math.floor(Math.random() * questionList.length);
+            var questionDiv = $("<div>").appendTo($("#gameBox"));
+            var answersDiv = $("<div>").appendTo($("#gameBox"));
+            
             currentQuestion = questionList[qIndex];
-            console.log(currentQuestion);
             questionsLeft--;
+            questionDiv.attr("class", "question");
+            questionDiv.text(currentQuestion.question);
+
+            var answer1 = $('<button>').attr({ class:'answer1 answerBtn', value: currentQuestion.answer1});
+            var answer2 = $('<button>').attr({ class:'answer2 answerBtn', value: currentQuestion.answer2});
+            var answer3 = $('<button>').attr({ class:'answer3 answerBtn', value: currentQuestion.answer3});
+            var answer4 = $('<button>').attr({ class:'answer4 answerBtn', value: currentQuestion.answer4});
+            answersDiv.attr("class", "answer");
+            answer1.appendTo(answersDiv);
+            answer2.appendTo(answersDiv);
+            answer3.appendTo(answersDiv);
+            answer4.appendTo(answersDiv);
+            $(".answer1").text(currentQuestion.answer1);
+            $(".answer2").text(currentQuestion.answer2);
+            $(".answer3").text(currentQuestion.answer3);
+            $(".answer4").text(currentQuestion.answer4);
+
         }
         
+        function setTimer() {
+            clearInterval(intervalId)
+            intervalId = setInterval(decrement, 1000);
+        }
+
+        function decrement() {
+            timeLeft--;
+            $("#timer").text(timeLeft);
+            if (timeLeft === 0) {
+                stop();
+            }
+        }
+
+        function stop() {
+            clearInterval(intervalId);
+        }
+
         getQuestion();
+        setTimer();
 
     }
 
