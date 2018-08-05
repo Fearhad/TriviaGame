@@ -188,12 +188,13 @@ var gameMenu = $("#menuScreen");
 var gameMain = $("#gameScreen");
 var gameCredits = $("#creditsScreen")
 var displayScreens = [menuScreen, gameScreen, creditsScreen, gameOverScreen];
+var highScore = 0;
+var currentQuestion;
+
 
 var game = {
     showScreen: function (activeDisplay) {
         displayScreens.forEach(function (currentDisplay) {
-            console.log(currentDisplay);
-            console.log(activeDisplay);
             if (currentDisplay == activeDisplay[0]) {
                 $(currentDisplay).css("display", "block");
             } else {
@@ -202,7 +203,21 @@ var game = {
         })
     },
     initGame: function() {
-    
+        
+        var questionsLeft = 10;
+        var score = 0;
+        var correctAnswers = 0;
+        var wrongAnswers = 0;
+        
+        function getQuestion() {
+            var qIndex = Math.floor(Math.random() * questionList.length);
+            currentQuestion = questionList[qIndex];
+            console.log(currentQuestion);
+            questionsLeft--;
+        }
+        
+        getQuestion();
+
     }
 
 }
@@ -220,6 +235,7 @@ document.querySelectorAll('#play')[0].addEventListener('click', function () {
     // game.gameUI.initGame();
     menuSong[0].pause();
     gameSong[0].play();
+    game.initGame();
 });
 
 document.querySelectorAll('#credits')[0].addEventListener('click', function () {
