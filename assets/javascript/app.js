@@ -186,6 +186,7 @@ var gameSong = $("#gameMusic");
 var creditsSong = $("#creditsMusic");
 var gameOverSong = $("#gameOverMusic");
 var correctSnd = $("#correctSnd");
+var wrongSnd = $("#wrongSnd");
 var gameMenu = $("#menuScreen");
 var gameMain = $("#gameScreen");
 var gameCredits = $("#creditsScreen");
@@ -213,8 +214,6 @@ var game = {
         })
     },
     checkAnswer: function (clickedButton) {
-        console.log("hi")
-        console.log(clickedButton.text());
 
         if (currentQuestion.correct === clickedButton.text()) {
             score = score + (timeLeft * 375);
@@ -224,10 +223,16 @@ var game = {
             $("#flavorDiv").show();
             gameSong[0].pause();
             correctSnd[0].play();
+            correctAnswers++;
 
 
         } else {
-            console.log("It's not working!!!");
+            game.stop();
+            $("#answersDiv").hide();
+            $("#flavorDiv").show();
+            gameSong[0].pause();
+            wrongSnd[0].play();
+            wrongAnswers++;
         }
     },
 
@@ -241,101 +246,123 @@ var game = {
         $("#timer").text(timeLeft);
         if (timeLeft === 0) {
             game.stop();
+            $("#answersDiv").hide();
+            $("#flavorDiv").show();
+            gameSong[0].pause();
+            wrongSnd[0].play();
+            wrongAnswers++;
+            delayNextQuestion = setTimeout(function () {
+                $(".question").remove();
+                $(".answer").remove();
+                $("#flavorDiv").remove();
+                clearInterval(intervalId);
+                game.setTimer();
+                getQuestion();
+            }, 10000);
         }
     },
 
     stop: function () {
         clearInterval(intervalId);
-    },
+    }
+}
 
-    initGame: function () {
-        
+function processEndGame() {
+    var results = $("<div id='results'>");
+    var playAgain = $("<div id='playAgain'>");
+    var playButton = $("<button id='play' class='btn btn-lg'>");
+    var creditsButton = $("<button id='credits' class='btn btn-lg'>");
 
-        function getQuestion() {
-        if (questionsLeft === 0) {
-            game.showScreen(gameOverScreen);
-            gameSong[0].pause();
-            gameOverSong[0].play();
-        } else {
+    if (score > highScore) {
+        highScore = score;
+        var gotHighScore = $("<div id='gotHighScore'>");
+        gotHighScore.text("Congratulations! You beat the High Score!")
+        gotHighScore.appendTo($("#OverScreen"));
+    }
+    results.text("You got " + correctAnswers + "correct and " + wrongAnswers + "incorrect with a final score of " + score);
+    results.appendTo($("#OverScreen"));
+    playAgain.text("Would you like to play again?");
+    playButton.appendTo($("#playAgain"));
+    creditsButton.appendTo($("#playAgain"));
+}
+
+
+function getQuestion() {
+    if (questionsLeft === 0) {
+        game.showScreen(gameOverScreen);
+        gameSong[0].pause();
+        gameOverSong[0].play();
+        processEndGame();
+    } else {
         correctSnd[0].pause();
         correctSnd[0].currentTime = 0;
         menuSong[0].pause();
         gameSong[0].play();
         timeLeft = 30;
-            
-            var qIndex = Math.floor(Math.random() * questionList.length);
-            var questionDiv = $("<div>").appendTo($("#gameBox"));
-            var answersDiv = $("<div id=answersDiv>").appendTo($("#gameBox"));
-            var flavorDiv = $("<div id=flavorDiv>").appendTo($("#gameBox"));
-            
-
-            currentQuestion = questionList[qIndex];
-            questionsLeft--;
-            questionDiv.attr("class", "question");
-            questionDiv.text(currentQuestion.question);
-
-            var answer1 = $('<button>').attr({
-                class: 'answer1 answerBtn',
-                value: currentQuestion.answer1,
-                'data-answer': 'answer1'
-            });
-            var answer2 = $('<button>').attr({
-                class: 'answer2 answerBtn',
-                value: currentQuestion.answer2,
-                'data-answer': 'answer2'
-            });
-            var answer3 = $('<button>').attr({
-                class: 'answer3 answerBtn',
-                value: currentQuestion.answer3,
-                'data-answer': 'answer3'
-            });
-            var answer4 = $('<button>').attr({
-                class: 'answer4 answerBtn',
-                value: currentQuestion.answer4,
-                'data-answer': 'answer4'
-            });
-            var p = $("<p>");
-            var flavorImg = $("<img>");
-            var flavorP = $("<p>");
-            answersDiv.attr("class", "answer");
-            answer1.appendTo(answersDiv);
-            answer2.appendTo(answersDiv);
-            answer3.appendTo(answersDiv);
-            answer4.appendTo(answersDiv);
-            flavorDiv.hide();
-            p.text("The correct answer is " + currentQuestion.correct);
-            p.appendTo(flavorDiv);
-            flavorP.text(currentQuestion.flavor);
-            flavorP.appendTo(flavorDiv);
-            flavorImg.attr("src", currentQuestion.image);
-            flavorImg.appendTo(flavorDiv);
-            $(".answer1").text(currentQuestion.answer1);
-            $(".answer2").text(currentQuestion.answer2);
-            $(".answer3").text(currentQuestion.answer3);
-            $(".answer4").text(currentQuestion.answer4);
-            $(".answerBtn").click(function () {
-                game.checkAnswer($(this));
-                delayNextQuestion = setTimeout(function() {
-                    $(".question").remove();
-                    $(".answer").remove();
-                    $("#flavorDiv").remove();
-                    clearInterval(intervalId);
-                    getQuestion();
-                    game.setTimer();
-                  }, 10000);
-            });
-        }
-        }
-        getQuestion();
         game.setTimer();
+        var qIndex = Math.floor(Math.random() * questionList.length);
+        var questionDiv = $("<div>").appendTo($("#gameBox"));
+        var answersDiv = $("<div id=answersDiv>").appendTo($("#gameBox"));
+        var flavorDiv = $("<div id=flavorDiv>").appendTo($("#gameBox"));
 
+
+        currentQuestion = questionList[qIndex];
+        questionsLeft--;
+        questionDiv.attr("class", "question");
+        questionDiv.text(currentQuestion.question);
+
+        var answer1 = $('<button>').attr({
+            class: 'answer1 answerBtn',
+            value: currentQuestion.answer1,
+            'data-answer': 'answer1'
+        });
+        var answer2 = $('<button>').attr({
+            class: 'answer2 answerBtn',
+            value: currentQuestion.answer2,
+            'data-answer': 'answer2'
+        });
+        var answer3 = $('<button>').attr({
+            class: 'answer3 answerBtn',
+            value: currentQuestion.answer3,
+            'data-answer': 'answer3'
+        });
+        var answer4 = $('<button>').attr({
+            class: 'answer4 answerBtn',
+            value: currentQuestion.answer4,
+            'data-answer': 'answer4'
+        });
+        var p = $("<p>");
+        var flavorImg = $("<img>");
+        var flavorP = $("<p>");
+        answersDiv.attr("class", "answer");
+        answer1.appendTo(answersDiv);
+        answer2.appendTo(answersDiv);
+        answer3.appendTo(answersDiv);
+        answer4.appendTo(answersDiv);
+        flavorDiv.hide();
+        p.text("The correct answer is " + currentQuestion.correct);
+        p.appendTo(flavorDiv);
+        flavorP.text(currentQuestion.flavor);
+        flavorP.appendTo(flavorDiv);
+        flavorImg.attr("src", currentQuestion.image);
+        flavorImg.appendTo(flavorDiv);
+        $(".answer1").text(currentQuestion.answer1);
+        $(".answer2").text(currentQuestion.answer2);
+        $(".answer3").text(currentQuestion.answer3);
+        $(".answer4").text(currentQuestion.answer4);
+        $(".answerBtn").click(function () {
+            game.checkAnswer($(this));
+            delayNextQuestion = setTimeout(function () {
+                $(".question").remove();
+                $(".answer").remove();
+                $("#flavorDiv").remove();
+                clearInterval(intervalId);
+                getQuestion();
+                game.setTimer();
+            }, 10000);
+        });
     }
-
-
-
 }
-
-
 
 $(document).ready(function () {
     function mainMenu() {
@@ -347,7 +374,7 @@ $(document).ready(function () {
 
 document.querySelectorAll('#play')[0].addEventListener('click', function () {
     game.showScreen(gameMain);
-    game.initGame();
+    getQuestion();
 });
 
 document.querySelectorAll('#credits')[0].addEventListener('click', function () {
