@@ -290,6 +290,7 @@ function processEndGame() {
 
 function getQuestion() {
     if (questionsLeft === 0) {
+        clearInterval(intervalId);
         game.showScreen(gameOverScreen);
         gameSong[0].pause();
         gameOverSong[0].play();
@@ -353,7 +354,6 @@ function getQuestion() {
         $(".answer4").text(currentQuestion.answer4);
         $(".answerBtn").click(function () {
             game.checkAnswer($(this));
-            if (questionsLeft !== 0) {
                 delayNextQuestion = setTimeout(function () {
                     $(".question").remove();
                     $(".answer").remove();
@@ -362,7 +362,7 @@ function getQuestion() {
                     getQuestion();
                     game.setTimer();
                 }, 10000);
-            }
+            
         });
 
     }
