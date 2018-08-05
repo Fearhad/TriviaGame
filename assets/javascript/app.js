@@ -279,9 +279,10 @@ function processEndGame() {
         gotHighScore.text("Congratulations! You beat the High Score!")
         gotHighScore.appendTo($("#OverScreen"));
     }
-    results.text("You got " + correctAnswers + "correct and " + wrongAnswers + "incorrect with a final score of " + score);
+    results.text("You got " + correctAnswers + " correct and " + wrongAnswers + " incorrect with a final score of " + score);
     results.appendTo($("#OverScreen"));
     playAgain.text("Would you like to play again?");
+    playAgain.appendTo($("#OverScreen"))
     playButton.appendTo($("#playAgain"));
     creditsButton.appendTo($("#playAgain"));
 }
@@ -352,15 +353,18 @@ function getQuestion() {
         $(".answer4").text(currentQuestion.answer4);
         $(".answerBtn").click(function () {
             game.checkAnswer($(this));
-            delayNextQuestion = setTimeout(function () {
-                $(".question").remove();
-                $(".answer").remove();
-                $("#flavorDiv").remove();
-                clearInterval(intervalId);
-                getQuestion();
-                game.setTimer();
-            }, 10000);
+            if (questionsLeft !== 0) {
+                delayNextQuestion = setTimeout(function () {
+                    $(".question").remove();
+                    $(".answer").remove();
+                    $("#flavorDiv").remove();
+                    clearInterval(intervalId);
+                    getQuestion();
+                    game.setTimer();
+                }, 10000);
+            }
         });
+
     }
 }
 
