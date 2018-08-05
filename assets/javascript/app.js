@@ -196,7 +196,7 @@ var displayScreens = [menuScreen, gameScreen, creditsScreen, OverScreen];
 var highScore = 0;
 var currentQuestion;
 var timeLeft;
-var questionsLeft = 10;
+var questionsLeft = 1;
 var score = 0;
 var correctAnswers = 0;
 var wrongAnswers = 0;
