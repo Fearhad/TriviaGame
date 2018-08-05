@@ -164,7 +164,7 @@ var questionList = [{
         answer2: "Plains east of Mordor",
         answer3: "Hidden entrance to Goblin-Town",
         answer4: "Bilbo's house",
-        correcT: "Hidden entrance to Goblin-Town",
+        correct: "Hidden entrance to Goblin-Town",
         image: "https://cdn.4archive.org/img/f74bJALm.jpg",
         flavor: "The Front Porch is where Bilbo Baggins and the dwarves take shelter from the thunder-battle. While they slept, goblins abducted the party using hidden entrances into the cave."
     },
@@ -190,7 +190,12 @@ var gameCredits = $("#creditsScreen")
 var displayScreens = [menuScreen, gameScreen, creditsScreen, gameOverScreen];
 var highScore = 0;
 var currentQuestion;
-
+var timeLeft = 30;
+var questionsLeft = 10;
+var score = 0;
+var correctAnswers = 0;
+var wrongAnswers = 0;
+var intervalId;
 
 var game = {
     showScreen: function (activeDisplay) {
@@ -202,64 +207,100 @@ var game = {
             }
         })
     },
-    initGame: function() {
-        
-        var questionsLeft = 10;
-        var score = 0;
-        var correctAnswers = 0;
-        var wrongAnswers = 0;
-        var intervalId;
-        var timeLeft = 30;
-        
+    checkAnswer: function (clickedButton) {
+        console.log("hi")
+        console.log(clickedButton.text());
+
+        if (currentQuestion.correct === clickedButton.text()) {
+            score = timeLeft * 375;
+            $("#score").text(score);
+            game.stop();
+            $("#answersDiv").hide();
+            $("#correctA").show();
+        } else {
+            console.log("It's not working!!!");
+        }
+    },
+
+    setTimer: function () {
+        clearInterval(intervalId)
+        intervalId = setInterval(game.decrement, 1000);
+    },
+
+    decrement: function () {
+        timeLeft--;
+        $("#timer").text(timeLeft);
+        if (timeLeft === 0) {
+            game.stop();
+        }
+    },
+
+    stop: function () {
+        clearInterval(intervalId);
+    },
+
+    initGame: function () {
+
+
         function getQuestion() {
             var qIndex = Math.floor(Math.random() * questionList.length);
             var questionDiv = $("<div>").appendTo($("#gameBox"));
-            var answersDiv = $("<div>").appendTo($("#gameBox"));
+            var answersDiv = $("<div id=answersDiv>").appendTo($("#gameBox"));
+            var flavorDiv = $("<div id=flavorDiv>").appendTo($("#gameBox"));
             
+
             currentQuestion = questionList[qIndex];
             questionsLeft--;
             questionDiv.attr("class", "question");
             questionDiv.text(currentQuestion.question);
 
-            var answer1 = $('<button>').attr({ class:'answer1 answerBtn', value: currentQuestion.answer1});
-            var answer2 = $('<button>').attr({ class:'answer2 answerBtn', value: currentQuestion.answer2});
-            var answer3 = $('<button>').attr({ class:'answer3 answerBtn', value: currentQuestion.answer3});
-            var answer4 = $('<button>').attr({ class:'answer4 answerBtn', value: currentQuestion.answer4});
+            var answer1 = $('<button>').attr({
+                class: 'answer1 answerBtn',
+                value: currentQuestion.answer1,
+                'data-answer': 'answer1'
+            });
+            var answer2 = $('<button>').attr({
+                class: 'answer2 answerBtn',
+                value: currentQuestion.answer2,
+                'data-answer': 'answer2'
+            });
+            var answer3 = $('<button>').attr({
+                class: 'answer3 answerBtn',
+                value: currentQuestion.answer3,
+                'data-answer': 'answer3'
+            });
+            var answer4 = $('<button>').attr({
+                class: 'answer4 answerBtn',
+                value: currentQuestion.answer4,
+                'data-answer': 'answer4'
+            });
+            var p = $("<p id='correctA'>");
             answersDiv.attr("class", "answer");
             answer1.appendTo(answersDiv);
             answer2.appendTo(answersDiv);
             answer3.appendTo(answersDiv);
             answer4.appendTo(answersDiv);
+            p.hide();
+            p.text("The correct answer is " + currentQuestion.correct);
+            p.appendTo(flavorDiv);
             $(".answer1").text(currentQuestion.answer1);
             $(".answer2").text(currentQuestion.answer2);
             $(".answer3").text(currentQuestion.answer3);
             $(".answer4").text(currentQuestion.answer4);
-
+            $(".answerBtn").click(function () {
+                game.checkAnswer($(this));
+            });
         }
-        
-        function setTimer() {
-            clearInterval(intervalId)
-            intervalId = setInterval(decrement, 1000);
-        }
-
-        function decrement() {
-            timeLeft--;
-            $("#timer").text(timeLeft);
-            if (timeLeft === 0) {
-                stop();
-            }
-        }
-
-        function stop() {
-            clearInterval(intervalId);
-        }
-
         getQuestion();
-        setTimer();
+        game.setTimer();
 
     }
 
+
+
 }
+
+
 
 $(document).ready(function () {
     function mainMenu() {
