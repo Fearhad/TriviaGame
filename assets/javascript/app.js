@@ -196,7 +196,7 @@ var displayScreens = [menuScreen, gameScreen, creditsScreen, OverScreen];
 var highScore = 0;
 var currentQuestion;
 var timeLeft;
-var questionsLeft = 10;
+var questionsLeft = 1;
 var score = 0;
 var correctAnswers = 0;
 var wrongAnswers = 0;
@@ -219,6 +219,7 @@ var game = {
             score = score + (timeLeft * 375);
             $("#score").text(score);
             game.stop();
+            $(".question").text("CORRECT!");
             $("#answersDiv").hide();
             $("#flavorDiv").show();
             gameSong[0].pause();
@@ -228,6 +229,7 @@ var game = {
 
         } else {
             game.stop();
+            $(".question").text("INCORRECT!");
             $("#answersDiv").hide();
             $("#flavorDiv").show();
             gameSong[0].pause();

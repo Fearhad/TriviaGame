@@ -9,7 +9,7 @@ ul {
     left: 0;
     margin: 0 auto;
     height: 100%;
-    /* Preserve aspet ratio */
+    /* Preserve aspect ratio */
     min-width: 100%;
     background-position: center;
     background-repeat: no-repeat;
@@ -24,7 +24,7 @@ ul {
     left: 0;
     margin: 0 auto;
     height: 100%;
-    /* Preserve aspet ratio */
+    /* Preserve aspect ratio */
     min-width: 100%;
     background-position: center;
     background-repeat: no-repeat;
@@ -197,11 +197,13 @@ h1 {
     color: white;
     font-size: 40px;
     height: 100%;
+    min-height: 750px;
     margin-top: 50px;
 }
 
-.answer {
+.answer, #flavorDiv{
     text-align: center;
+    margin-bottom: 20px;
 }
 
 .answerBtn {
@@ -242,5 +244,13 @@ h1 {
 
 #score, #hiscore {
     border: #000000 4px solid;
-    background-color: white;
+    background-color: brown;
+    color: white;
+}
+
+#results, #gotHighScore, #playAgain {
+    text-align: center;
+    color: white;
+    font-family: 'Fruktur', cursive;
+    font-size: 30px;
 }
