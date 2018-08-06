@@ -120,7 +120,7 @@ h1 {
     top: 6em;
     position: relative;
     box-sizing: border-box;
-    animation: marquee 15s linear infinite;
+    animation: marquee 40s linear infinite;
 }
 
 /* Make it move! */
