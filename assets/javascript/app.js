@@ -36,7 +36,7 @@ var questionList = [{
         answer4: "The Southern Star",
         correct: "The Southern Star",
         image: "http://4.bp.blogspot.com/-gFg0mm79USQ/VfjGREV9erI/AAAAAAAAChQ/qDDwN6EAJig/s320/1.4%2BPrancing%2BPony.jpg",
-        flavor: "The Prancing Pony was the Inn of Bree, whose landlord at the time of the War of the Ring was Barliman Butterbur.One of the Shire's many inns, the Green Dragon stood on the Bywater Road, the last building passed by travellers from Bywater on their way towards Hobbiton. The Bridge Inn was an inn built on the western banks of the River Brandywine. Southern Star is Pipeweed"
+        flavor: "The Prancing Pony was the Inn of Bree, whose landlord at the time of the War of the Ring was Barliman Butterbur. One of the Shire's many inns, the Green Dragon stood on the Bywater Road, the last building passed by travellers from Bywater on their way towards Hobbiton. The Bridge Inn was an inn built on the western banks of the River Brandywine. Southern Star is Pipeweed"
     },
     {
         question: "Who attacked Isengard in the Battle of Isengard?",
@@ -196,7 +196,7 @@ var displayScreens = [menuScreen, gameScreen, creditsScreen, OverScreen];
 var highScore = 0;
 var currentQuestion;
 var timeLeft;
-var questionsLeft = 1;
+var questionsLeft = 10;
 var score = 0;
 var correctAnswers = 0;
 var wrongAnswers = 0;
